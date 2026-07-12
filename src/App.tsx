@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { BootSequence } from './components/boot/BootSequence';
+import { StatusBar } from './components/layout/StatusBar';
 import { InteractiveShell } from './components/shell/InteractiveShell';
 
 const Page = styled.main`
@@ -185,17 +186,6 @@ const Card = styled(motion.article)`
   p { margin: 0; color: ${({ theme }) => theme.colors.muted}; line-height: 1.65; font-size: .88rem; }
 `;
 
-const Status = styled.footer`
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: ${({ theme }) => theme.colors.muted};
-  font-size: .72rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-  padding-top: 18px;
-  @media (max-width: 560px) { flex-direction: column; }
-`;
-
 const cards = [
   ['frontend.stack', 'React, TypeScript, Redux, Emotion, Vite and scalable SPA architecture.'],
   ['realtime.stack', 'WebRTC, SIP, JsSIP, WebSocket, ICE, STUN, TURN and VoIP troubleshooting.'],
@@ -267,12 +257,8 @@ export default function App() {
                 <Action href="mailto:filippo.giacche@gmail.com">./email</Action>
               </Actions>
             </section>
-
-            <Status>
-              <span>STATUS: available for remote opportunities</span>
-              <span>LOCATION: Italy · REMOTE</span>
-            </Status>
           </Body>
+          <StatusBar />
         </Terminal>
       </Page>
     </>
