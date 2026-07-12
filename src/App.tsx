@@ -57,10 +57,45 @@ const Title = styled.div`
   @media (max-width: 680px) { text-align: right; font-size: .68rem; }
 `;
 
+const Navigation = styled.nav`
+  display: flex;
+  gap: 8px;
+  padding: 12px 18px;
+  overflow-x: auto;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  background: rgba(0, 0, 0, 0.18);
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+
+  a {
+    flex: 0 0 auto;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    color: ${({ theme }) => theme.colors.muted};
+    text-decoration: none;
+    font-size: .78rem;
+  }
+
+  a:hover, a:focus-visible {
+    color: ${({ theme }) => theme.colors.primarySoft};
+    border-color: ${({ theme }) => theme.colors.border};
+    outline: none;
+  }
+
+  @media (max-width: 680px) { padding: 9px 12px; }
+`;
+
 const Body = styled.div`
   padding: clamp(22px, 5vw, 72px);
   display: grid;
   gap: 56px;
+
+  section { scroll-margin-top: 20px; }
 
   @media (max-width: 680px) {
     padding: 22px 16px 34px;
@@ -173,8 +208,13 @@ export default function App() {
           <Title>guest@giacco:~/portfolio</Title>
           <div />
         </Bar>
+        <Navigation aria-label="Portfolio sections">
+          <a href="#home">./home</a>
+          <a href="#skills">./skills</a>
+          <a href="#contact">./contact</a>
+        </Navigation>
         <Body>
-          <section>
+          <section id="home">
             <Prompt>$ whoami</Prompt>
             <HeroTitle initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }}>
               Filippo Giacchè
@@ -183,14 +223,9 @@ export default function App() {
             <Intro>
               I build enterprise web applications and real-time communication platforms, combining frontend engineering, backend development, Linux, networking and open-source contributions.
             </Intro>
-            <Actions>
-              <Action href="https://github.com/giacco" target="_blank" rel="noreferrer">./github</Action>
-              <Action href="https://www.linkedin.com/in/filippo-giacchè" target="_blank" rel="noreferrer">./linkedin</Action>
-              <Action href="mailto:filippo.giacche@gmail.com">./contact</Action>
-            </Actions>
           </section>
 
-          <section>
+          <section id="skills">
             <Prompt>$ cat core-skills.txt</Prompt>
             <Grid>
               {cards.map(([title, body], index) => (
@@ -200,6 +235,15 @@ export default function App() {
                 </Card>
               ))}
             </Grid>
+          </section>
+
+          <section id="contact">
+            <Prompt>$ ls ./contact</Prompt>
+            <Actions>
+              <Action href="https://github.com/giacco" target="_blank" rel="noreferrer">./github</Action>
+              <Action href="https://www.linkedin.com/in/filippo-giacchè" target="_blank" rel="noreferrer">./linkedin</Action>
+              <Action href="mailto:filippo.giacche@gmail.com">./email</Action>
+            </Actions>
           </section>
 
           <Status>
