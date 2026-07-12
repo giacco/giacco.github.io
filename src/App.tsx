@@ -1,5 +1,8 @@
+import { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import { BootSequence } from './components/boot/BootSequence';
+import { InteractiveShell } from './components/shell/InteractiveShell';
 
 const Page = styled.main`
   width: min(1120px, calc(100% - 32px));
@@ -199,59 +202,79 @@ const cards = [
   ['backend.ops', 'PHP, Symfony, REST APIs, Linux, Docker, Nginx, Go and automation.'],
 ];
 
+function shouldShowBoot() {
+  return typeof window !== 'undefined' && sessionStorage.getItem('portfolio-booted') !== 'true';
+}
+
 export default function App() {
+  const [isBooting, setIsBooting] = useState(shouldShowBoot);
+
+  const completeBoot = useCallback(() => {
+    sessionStorage.setItem('portfolio-booted', 'true');
+    setIsBooting(false);
+  }, []);
+
   return (
-    <Page>
-      <Terminal>
-        <Bar>
-          <Dots><span /><span /><span /></Dots>
-          <Title>guest@giacco:~/portfolio</Title>
-          <div />
-        </Bar>
-        <Navigation aria-label="Portfolio sections">
-          <a href="#home">./home</a>
-          <a href="#skills">./skills</a>
-          <a href="#contact">./contact</a>
-        </Navigation>
-        <Body>
-          <section id="home">
-            <Prompt>$ whoami</Prompt>
-            <HeroTitle initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }}>
-              Filippo Giacchè
-            </HeroTitle>
-            <Role>Senior Full Stack Developer</Role>
-            <Intro>
-              I build enterprise web applications and real-time communication platforms, combining frontend engineering, backend development, Linux, networking and open-source contributions.
-            </Intro>
-          </section>
+    <>
+      {isBooting && <BootSequence onComplete={completeBoot} />}
+      <Page>
+        <Terminal>
+          <Bar>
+            <Dots><span /><span /><span /></Dots>
+            <Title>guest@giacco:~/portfolio</Title>
+            <div />
+          </Bar>
+          <Navigation aria-label="Portfolio sections">
+            <a href="#home">./home</a>
+            <a href="#skills">./skills</a>
+            <a href="#shell">./shell</a>
+            <a href="#contact">./contact</a>
+          </Navigation>
+          <Body>
+            <section id="home">
+              <Prompt>$ whoami</Prompt>
+              <HeroTitle initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }}>
+                Filippo Giacchè
+              </HeroTitle>
+              <Role>Senior Full Stack Developer</Role>
+              <Intro>
+                I build enterprise web applications and real-time communication platforms, combining frontend engineering, backend development, Linux, networking and open-source contributions.
+              </Intro>
+            </section>
 
-          <section id="skills">
-            <Prompt>$ cat core-skills.txt</Prompt>
-            <Grid>
-              {cards.map(([title, body], index) => (
-                <Card key={title} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .08 }}>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </Card>
-              ))}
-            </Grid>
-          </section>
+            <section id="skills">
+              <Prompt>$ cat core-skills.txt</Prompt>
+              <Grid>
+                {cards.map(([title, body], index) => (
+                  <Card key={title} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .08 }}>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </Card>
+                ))}
+              </Grid>
+            </section>
 
-          <section id="contact">
-            <Prompt>$ ls ./contact</Prompt>
-            <Actions>
-              <Action href="https://github.com/giacco" target="_blank" rel="noreferrer">./github</Action>
-              <Action href="https://www.linkedin.com/in/filippo-giacchè" target="_blank" rel="noreferrer">./linkedin</Action>
-              <Action href="mailto:filippo.giacche@gmail.com">./email</Action>
-            </Actions>
-          </section>
+            <section id="shell">
+              <Prompt>$ ./portfolio-shell</Prompt>
+              <InteractiveShell />
+            </section>
 
-          <Status>
-            <span>STATUS: available for remote opportunities</span>
-            <span>LOCATION: Italy · REMOTE</span>
-          </Status>
-        </Body>
-      </Terminal>
-    </Page>
+            <section id="contact">
+              <Prompt>$ ls ./contact</Prompt>
+              <Actions>
+                <Action href="https://github.com/giacco" target="_blank" rel="noreferrer">./github</Action>
+                <Action href="https://www.linkedin.com/in/filippo-giacchè" target="_blank" rel="noreferrer">./linkedin</Action>
+                <Action href="mailto:filippo.giacche@gmail.com">./email</Action>
+              </Actions>
+            </section>
+
+            <Status>
+              <span>STATUS: available for remote opportunities</span>
+              <span>LOCATION: Italy · REMOTE</span>
+            </Status>
+          </Body>
+        </Terminal>
+      </Page>
+    </>
   );
 }
