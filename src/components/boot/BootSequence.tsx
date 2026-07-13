@@ -63,7 +63,7 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
         setVisibleLines((current) => [...current, line]);
 
         if (index === lines.length - 1) {
-          window.setTimeout(onComplete, 450);
+          window.setTimeout(onComplete, 1450);
         }
       }, 360 * index),
     );

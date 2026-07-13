@@ -29,7 +29,10 @@ const Form = styled.form`
   padding: 12px 16px;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 
-  span { color: ${({ theme }) => theme.colors.primary}; }
+  span {
+    flex: 0 0 auto;
+    color: ${({ theme }) => theme.colors.primary};
+  }
 
   input {
     min-width: 0;
@@ -39,6 +42,17 @@ const Form = styled.form`
     color: ${({ theme }) => theme.colors.primarySoft};
     background: transparent;
     font: inherit;
+  }
+
+  @media (max-width: 560px) {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 6px;
+
+    span,
+    input {
+      width: 100%;
+    }
   }
 `;
 
