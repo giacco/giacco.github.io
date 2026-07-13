@@ -42,6 +42,8 @@ const Form = styled.form`
   }
 `;
 
+type Session = 'guest' | 'root' | 'asterisk';
+
 const HELP = `Available commands
 
 Profile
@@ -57,7 +59,7 @@ Contact
   contact  github  linkedin  email  resume  certificate
 
 Terminal
-  help  history  clear  matrix  coffee  sudo  hack
+  help  history  clear  matrix  coffee  sudo  sudo su  ssh pbx  exit  hack
 
 Keyboard
   ↑ / ↓ command history · Tab autocomplete`;
@@ -122,7 +124,8 @@ const commandNames = [
   'help', 'whoami', 'about', 'skills', 'experience', 'timeline', 'stats', 'hire',
   'ls', 'pwd', 'tree', 'cv', 'projects', 'blog', 'routeros', 'kalliope', 'jssip',
   'libreoffice', 'opensource', 'contact', 'github', 'linkedin', 'email', 'resume',
-  'certificate', 'history', 'clear', 'matrix', 'coffee', 'sudo', 'hack',
+  'certificate', 'history', 'clear', 'matrix', 'coffee', 'sudo', 'sudo su', 'ssh pbx',
+  'exit', 'hack',
 ];
 
 const routes: Record<string, string> = {
@@ -132,6 +135,12 @@ const routes: Record<string, string> = {
   shell: '/shell',
   blog: '/blog',
   projects: '/projects',
+};
+
+const prompts: Record<Session, string> = {
+  guest: 'guest@giacco:~/portfolio$',
+  root: 'root@giacco:/home/guest/portfolio#',
+  asterisk: 'root@asterisk:~#',
 };
 
 function navigate(route: string) {
@@ -144,8 +153,9 @@ function openExternal(url: string) {
 
 export function InteractiveShell() {
   const [value, setValue] = useState('');
+  const [session, setSession] = useState<Session>('guest');
   const [history, setHistory] = useState<string[]>([
-    'Portfolio shell v1.0',
+    'Portfolio shell v1.1',
     "Type 'help' to list available commands.",
   ]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -160,8 +170,8 @@ export function InteractiveShell() {
     element.scrollTop = element.scrollHeight;
   }, [history]);
 
-  function append(command: string, response: string) {
-    setHistory((current) => [...current, `$ ${command}`, response]);
+  function append(command: string, response: string, prompt = prompts[session]) {
+    setHistory((current) => [...current, `${prompt} ${command}`, response]);
   }
 
   function runCommand(rawCommand: string) {
@@ -186,8 +196,47 @@ export function InteractiveShell() {
       return;
     }
 
-    if (/^sudo\s+rm\s+-rf\s+\/$/.test(command) || /^sudo\s+rm\s+-fr\s+\/$/.test(command)) {
+    if (/^sudo\s+rm\s+-(rf|fr)\s+\/$/.test(command)) {
       append(command, 'Nice try 😄');
+      return;
+    }
+
+    if (command === 'sudo su' || command === 'sudo -i') {
+      append(command, 'root shell opened');
+      setSession('root');
+      return;
+    }
+
+    if (command === 'ssh pbx' || command === 'ssh root@pbx') {
+      append(command, `Connecting to pbx...
+The authenticity of host 'pbx' has been established.
+Welcome to Asterisk PBX
+Last login: just now from portfolio.local`);
+      setSession('asterisk');
+      return;
+    }
+
+    if (command === 'exit') {
+      if (session === 'asterisk') {
+        append(command, 'Connection to pbx closed.');
+        setSession('guest');
+      } else if (session === 'root') {
+        append(command, 'logout');
+        setSession('guest');
+      } else {
+        append(command, 'There is no active remote session.');
+      }
+      return;
+    }
+
+    if (session === 'asterisk') {
+      if (command === 'whoami') append(command, 'root');
+      else if (command === 'hostname') append(command, 'asterisk');
+      else if (command === 'pwd') append(command, '/root');
+      else if (command === 'asterisk -rvvv') append(command, `Asterisk 18 connected to asterisk (pid = 1337)
+asterisk*CLI>`);
+      else if (command === 'core show version') append(command, 'Asterisk 18 portfolio simulation');
+      else append(command, `bash: ${command}: command not found`);
       return;
     }
 
@@ -275,7 +324,7 @@ export function InteractiveShell() {
     <ShellBox>
       <Output ref={outputRef} aria-live="polite" aria-label="Shell output">{output}</Output>
       <Form onSubmit={submit}>
-        <span aria-hidden="true">$</span>
+        <span aria-hidden="true">{prompts[session]}</span>
         <input
           aria-label="Shell command"
           autoComplete="off"
