@@ -5,6 +5,7 @@ import { HashRouter, NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { BootSequence } from './components/boot/BootSequence';
 import { StatusBar } from './components/layout/StatusBar';
 import { InteractiveShell } from './components/shell/InteractiveShell';
+import { CvPage } from './pages/CvPage';
 
 const Page = styled.main`
   width: min(1120px, calc(100% - 32px));
@@ -172,7 +173,7 @@ export default function RoutedApp() {
       <Body><Routes>
         <Route path="/" element={<PortfolioPage />} />
         <Route path="/shell" element={<><Prompt>$ ./portfolio-shell</Prompt><InteractiveShell /></>} />
-        <Route path="/cv" element={<PlaceholderPage title="Curriculum Vitae" command="cat cv.md" text="Professional profile, experience, education, certifications and downloadable PDF will be added in the next content-focused merge request." />} />
+        <Route path="/cv" element={<CvPage />} />
         <Route path="/blog" element={<PlaceholderPage title="Technical Blog" command="ls ./blog" text="Articles about React, TypeScript, WebRTC, SIP, Linux, networking and software architecture are coming next." />} />
         <Route path="/projects" element={<PlaceholderPage title="Projects" command="ls ./projects" text="RouterOS in Go, Kalliope, JsSIP contributions and selected engineering work will be presented here." />} />
         <Route path="*" element={<Navigate to="/" replace />} />
