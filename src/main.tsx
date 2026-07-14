@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from '@emotion/react';
-import RoutedApp from './RoutedApp';
+import PortfolioRoot from './PortfolioRoot';
 import { GlobalStyles } from './globalStyles';
 import { theme } from './theme';
 
@@ -17,7 +17,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <GlobalStyles theme={theme} />
-      <RoutedApp />
+      <PortfolioRoot />
     </ThemeProvider>
   </StrictMode>,
 );
