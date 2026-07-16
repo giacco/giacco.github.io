@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
 
 const profileImagePath = '/asset/profile.jpeg';
-const printableCvViewPath = '#/cv/print';
-const printableCvPrintPath = '#/cv/print?print=1';
 const certificateDownloadPath = encodeURI('/asset/Filippo giacchè.pdf');
 const certificateDownloadName = 'filippo-giacche-libreoffice-certificate.pdf';
+const printableCvRoute = '/cv/print';
+const printableCvPrintRoute = '/cv/print?print=1';
+
+function navigate(route: string) {
+  window.location.hash = route;
+}
 
 const Page = styled.section`
   display: grid;
@@ -172,8 +176,8 @@ export function CvPage() {
           <Actions>
             <a href="https://github.com/giacco" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://www.linkedin.com/in/filippo-giacchè" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href={printableCvViewPath}>Show printable CV</a>
-            <a href={printableCvPrintPath}>Print / Save PDF</a>
+            <button type="button" onClick={() => navigate(printableCvRoute)}>Show printable CV</button>
+            <button type="button" onClick={() => navigate(printableCvPrintRoute)}>Print / Save PDF</button>
           </Actions>
         </Intro>
       </Hero>
