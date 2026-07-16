@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent, KeyboardEvent } from 'react';
 import styled from '@emotion/styled';
 
+const certificateDownloadPath = encodeURI('/asset/Filippo giacchè.pdf');
+const certificateDownloadName = 'filippo-giacche-libreoffice-certificate.pdf';
+
 const ShellBox = styled.div`
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -125,7 +128,7 @@ Accepted patches contributed during a university internship. First-patch acknowl
 GitHub: github.com/giacco
 LinkedIn: linkedin.com/in/filippo-giacchè`,
   resume: 'Opening the CV page...',
-  certificate: 'LibreOffice certificate link will be enabled when the standalone PDF is added.',
+  certificate: 'Downloading LibreOffice certificate...',
   matrix: `Wake up, recruiter...
 The portfolio has you.
 Follow the green cursor.`,
@@ -163,6 +166,16 @@ function navigate(route: string) {
 
 function openExternal(url: string) {
   window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+function downloadFile(url: string, filename?: string) {
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  if (filename) anchor.download = filename;
+  anchor.rel = 'noopener noreferrer';
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
 }
 
 export function InteractiveShell() {
@@ -269,6 +282,12 @@ asterisk*CLI>`);
     if (routes[command]) {
       append(command, `Opening ${command}...`);
       navigate(routes[command]);
+      return;
+    }
+
+    if (command === 'certificate') {
+      append(command, 'Downloading LibreOffice certificate...');
+      downloadFile(certificateDownloadPath, certificateDownloadName);
       return;
     }
 

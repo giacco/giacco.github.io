@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
 
+const profileImagePath = '/asset/profile.jpeg';
+const certificateDownloadPath = encodeURI('/asset/Filippo giacchè.pdf');
+const certificateDownloadName = 'filippo-giacche-libreoffice-certificate.pdf';
+
 const Page = styled.section`
   display: grid;
   gap: 24px;
@@ -26,14 +30,17 @@ const Hero = styled.header`
 
 const Photo = styled.div`
   aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border: 1px dashed ${({ theme }) => theme.colors.border};
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 12px;
-  color: ${({ theme }) => theme.colors.muted};
   background: rgba(0, 255, 102, .03);
-  text-align: center;
-  font-size: .76rem;
+`;
+
+const PhotoImage = styled.img`
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 `;
 
 const Intro = styled.div`
@@ -121,16 +128,22 @@ const Facts = styled.dl`
   dd { margin: 0; color: ${({ theme }) => theme.colors.text}; line-height: 1.5; }
 `;
 
-const CertificatePlaceholder = styled.div`
+const CertificateCard = styled.div`
   display: grid;
   gap: 10px;
   min-height: 150px;
-  place-items: center;
   padding: 18px;
-  border: 1px dashed ${({ theme }) => theme.colors.border};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 10px;
-  color: ${({ theme }) => theme.colors.muted};
-  text-align: center;
+  background: rgba(0, 255, 102, .03);
+
+  strong {
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  p {
+    margin: 0;
+  }
 `;
 
 const skills = [
@@ -144,7 +157,9 @@ export function CvPage() {
   return (
     <Page>
       <Hero>
-        <Photo>PHOTO<br />placeholder<br />public/assets/profile.jpg</Photo>
+        <Photo>
+          <PhotoImage src={profileImagePath} alt="Profile portrait of Filippo Giacchè" />
+        </Photo>
         <Intro>
           <Prompt>$ cat ./cv/filippo-giacche.md</Prompt>
           <h1>Filippo Giacchè</h1>
@@ -226,12 +241,12 @@ export function CvPage() {
 
           <Panel>
             <h2>certifications/</h2>
-            <CertificatePlaceholder>
-              LibreOffice First Patch Certificate<br />
-              Replace with: public/assets/certificates/libreoffice.pdf
-            </CertificatePlaceholder>
+            <CertificateCard>
+              <strong>LibreOffice First Patch Certificate</strong>
+              <p>Attestation PDF available for direct download from the portfolio.</p>
+            </CertificateCard>
             <Actions>
-              <a href="/assets/certificates/libreoffice.pdf" target="_blank" rel="noreferrer">Open certificate</a>
+              <a href={certificateDownloadPath} download={certificateDownloadName}>Download certificate</a>
             </Actions>
           </Panel>
         </div>
