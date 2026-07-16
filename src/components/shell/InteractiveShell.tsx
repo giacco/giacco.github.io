@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 
 const certificateDownloadPath = encodeURI('/asset/Filippo giacchè.pdf');
 const certificateDownloadName = 'filippo-giacche-libreoffice-certificate.pdf';
+const printableCvRoute = '/cv/print';
+const printableCvPrintRoute = '/cv/print?print=1';
 
 const ShellBox = styled.div`
   width: 100%;
@@ -138,7 +140,7 @@ Accepted patches contributed during a university internship. First-patch acknowl
   contact: `Email: filippo.giacche@gmail.com
 GitHub: github.com/giacco
 LinkedIn: linkedin.com/in/filippo-giacchè`,
-  resume: 'Opening the CV page...',
+  resume: 'Opening printable CV...',
   certificate: 'Downloading LibreOffice certificate...',
   matrix: `Wake up, recruiter...
 The portfolio has you.
@@ -298,13 +300,13 @@ asterisk*CLI>`);
 
     if (command === 'print' || command === 'print cv') {
       append(command, 'Preparing printable CV...\nLaunching print dialog...');
-      navigate('/cv/print?print=1');
+      navigate(printableCvPrintRoute);
       return;
     }
 
     if (command === 'resume') {
-      append(command, 'Opening CV PDF...');
-      openExternal('/assets/cv/filippo-giacche-cv.pdf');
+      append(command, 'Opening printable CV...');
+      navigate(printableCvRoute);
       return;
     }
 

@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
 const profileImagePath = '/asset/profile.jpeg';
+const printableCvViewPath = '#/cv/print';
+const printableCvPrintPath = '#/cv/print?print=1';
 const certificateDownloadPath = encodeURI('/asset/Filippo giacchè.pdf');
 const certificateDownloadName = 'filippo-giacche-libreoffice-certificate.pdf';
 
@@ -170,8 +172,8 @@ export function CvPage() {
           <Actions>
             <a href="https://github.com/giacco" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://www.linkedin.com/in/filippo-giacchè" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="/assets/cv/filippo-giacche-cv.pdf" target="_blank" rel="noreferrer">Download PDF</a>
-            <button type="button" onClick={() => window.print()}>Print / Save PDF</button>
+            <a href={printableCvViewPath}>Show printable CV</a>
+            <a href={printableCvPrintPath}>Print / Save PDF</a>
           </Actions>
         </Intro>
       </Hero>
@@ -243,9 +245,10 @@ export function CvPage() {
             <h2>certifications/</h2>
             <CertificateCard>
               <strong>LibreOffice First Patch Certificate</strong>
-              <p>Attestation PDF available for direct download from the portfolio.</p>
+              <p>Attestation PDF available to view in the browser or download locally.</p>
             </CertificateCard>
             <Actions>
+              <a href={certificateDownloadPath} target="_blank" rel="noreferrer">Show certificate</a>
               <a href={certificateDownloadPath} download={certificateDownloadName}>Download certificate</a>
             </Actions>
           </Panel>
