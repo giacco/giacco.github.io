@@ -15,7 +15,16 @@ export function GlobalStyles({ theme }: { theme: PortfolioTheme }) {
           text-rendering: optimizeLegibility;
         }
 
-        * { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html,
+        body,
+        #root {
+          width: 100%;
+          max-width: 100%;
+          min-height: 100%;
+          overflow-x: clip;
+        }
 
         html { scroll-behavior: smooth; }
 
@@ -23,7 +32,6 @@ export function GlobalStyles({ theme }: { theme: PortfolioTheme }) {
           margin: 0;
           min-width: 320px;
           min-height: 100vh;
-          overflow-x: hidden;
           background:
             radial-gradient(circle at 20% 10%, rgba(0, 255, 102, 0.08), transparent 34rem),
             linear-gradient(180deg, #020402 0%, ${theme.colors.background} 100%);
@@ -46,6 +54,7 @@ export function GlobalStyles({ theme }: { theme: PortfolioTheme }) {
         }
 
         a { color: inherit; }
+        img, svg, canvas, video { max-width: 100%; }
         button, input { font: inherit; }
         ::selection { background: ${theme.colors.primary}; color: #001a08; }
 

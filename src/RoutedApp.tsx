@@ -8,13 +8,20 @@ import { InteractiveShell } from './components/shell/InteractiveShell';
 import { CvPage } from './pages/CvPage';
 
 const Page = styled.main`
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
   padding: 32px 0 64px;
+  box-sizing: border-box;
   @media (max-width: 680px) { width: min(100% - 20px, 1120px); padding-top: 12px; }
 `;
 
 const Terminal = styled.section`
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: calc(100vh - 96px);
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 18px;
@@ -52,6 +59,8 @@ const Title = styled.div`
 
 const Navigation = styled.nav`
   display: flex;
+  max-width: 100%;
+  min-width: 0;
   gap: 8px;
   padding: 12px 18px;
   overflow-x: auto;
@@ -65,6 +74,8 @@ const Navigation = styled.nav`
 `;
 
 const Body = styled.div`
+  max-width: 100%;
+  min-width: 0;
   min-height: 520px;
   padding: clamp(22px, 5vw, 72px);
   display: grid;

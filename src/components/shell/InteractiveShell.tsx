@@ -3,6 +3,8 @@ import type { FormEvent, KeyboardEvent } from 'react';
 import styled from '@emotion/styled';
 
 const ShellBox = styled.div`
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 10px;
@@ -10,6 +12,7 @@ const ShellBox = styled.div`
 `;
 
 const Output = styled.div`
+  min-width: 0;
   min-height: 230px;
   max-height: 380px;
   overflow-y: auto;
@@ -24,6 +27,7 @@ const Output = styled.div`
 
 const Form = styled.form`
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 10px;
   padding: 12px 16px;
@@ -31,10 +35,13 @@ const Form = styled.form`
 
   span {
     flex: 0 0 auto;
+    max-width: 100%;
     color: ${({ theme }) => theme.colors.primary};
+    overflow-wrap: anywhere;
   }
 
   input {
+    width: 100%;
     min-width: 0;
     flex: 1;
     border: 0;
@@ -48,6 +55,7 @@ const Form = styled.form`
     align-items: stretch;
     flex-direction: column;
     gap: 6px;
+    padding-inline: 12px;
 
     span,
     input {
@@ -70,7 +78,10 @@ Work
   routeros  kalliope  jssip  libreoffice  opensource
 
 Contact
-  contact  github  linkedin  email  resume  certificate
+  contact  github  linkedin  email
+
+Documents
+  resume  certificate  print  print cv
 
 Terminal
   help  history  clear  matrix  coffee  sudo  sudo su  ssh pbx  exit  hack
@@ -124,8 +135,6 @@ Accepted patches contributed during a university internship. First-patch acknowl
   contact: `Email: filippo.giacche@gmail.com
 GitHub: github.com/giacco
 LinkedIn: linkedin.com/in/filippo-giacchè`,
-  resume: 'Opening the CV page...',
-  certificate: 'LibreOffice certificate link will be enabled when the standalone PDF is added.',
   matrix: `Wake up, recruiter...
 The portfolio has you.
 Follow the green cursor.`,
@@ -138,8 +147,8 @@ const commandNames = [
   'help', 'whoami', 'about', 'skills', 'experience', 'timeline', 'stats', 'hire',
   'ls', 'pwd', 'tree', 'cv', 'projects', 'blog', 'routeros', 'kalliope', 'jssip',
   'libreoffice', 'opensource', 'contact', 'github', 'linkedin', 'email', 'resume',
-  'certificate', 'history', 'clear', 'matrix', 'coffee', 'sudo', 'sudo su', 'ssh pbx',
-  'exit', 'hack',
+  'certificate', 'print', 'print cv', 'history', 'clear', 'matrix', 'coffee', 'sudo',
+  'sudo su', 'ssh pbx', 'exit', 'hack',
 ];
 
 const routes: Record<string, string> = {
@@ -169,7 +178,7 @@ export function InteractiveShell() {
   const [value, setValue] = useState('');
   const [session, setSession] = useState<Session>('guest');
   const [history, setHistory] = useState<string[]>([
-    'Portfolio shell v1.1',
+    'Portfolio shell v1.2',
     "Type 'help' to list available commands.",
   ]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -269,6 +278,24 @@ asterisk*CLI>`);
     if (routes[command]) {
       append(command, `Opening ${command}...`);
       navigate(routes[command]);
+      return;
+    }
+
+    if (command === 'print' || command === 'print cv') {
+      append(command, 'Preparing printable CV...\nLaunching print dialog...');
+      navigate('/cv/print?print=1');
+      return;
+    }
+
+    if (command === 'resume') {
+      append(command, 'Opening CV PDF...');
+      openExternal('/assets/cv/filippo-giacche-cv.pdf');
+      return;
+    }
+
+    if (command === 'certificate') {
+      append(command, 'Opening LibreOffice certificate...');
+      openExternal('/assets/certificates/libreoffice.pdf');
       return;
     }
 

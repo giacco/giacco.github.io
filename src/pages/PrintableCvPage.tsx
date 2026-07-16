@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 const Sheet = styled.main`
   width: min(210mm, 100%);
+  max-width: 100%;
   min-height: 297mm;
   margin: 0 auto;
   padding: 18mm 16mm;
@@ -50,6 +51,12 @@ const Header = styled.header`
     color: #315b82;
     font-size: 14px;
     font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  @media screen and (max-width: 640px) {
+    grid-template-columns: 1fr;
+    align-items: start;
   }
 `;
 
@@ -59,10 +66,15 @@ const Contact = styled.div`
   color: #4b5563;
   font-size: 9.5px;
   text-align: right;
+  overflow-wrap: anywhere;
 
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  @media screen and (max-width: 640px) {
+    text-align: left;
   }
 `;
 
@@ -78,6 +90,11 @@ const Columns = styled.div`
   grid-template-columns: minmax(0, 1.55fr) minmax(58mm, .75fr);
   gap: 14mm;
   margin-top: 16px;
+
+  @media screen and (max-width: 760px) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
 `;
 
 const Section = styled.section`
@@ -122,6 +139,17 @@ const Experience = styled.article`
     color: #4b5563;
     font-size: 9.4px;
     line-height: 1.5;
+  }
+
+  @media screen and (max-width: 640px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    strong {
+      white-space: normal;
+    }
   }
 `;
 
@@ -169,6 +197,11 @@ const Actions = styled.div`
     background: #1f4b78;
     font: inherit;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 640px) {
+    right: 12px;
+    bottom: 12px;
   }
 
   @media print {
